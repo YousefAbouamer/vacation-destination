@@ -6,15 +6,9 @@
    or use it for commercial purposes.
  ************************************************************)
 
-(* TODO: change the name and NetID below to your own, then delete this TODO
-   comment. *)
-
 (** CS 3110 Spring 2023 Assignment A2 Adventure
 
-    @author Your Name Here (your netid here) *)
-
-(* TODO: complete the academic integrity statement below, then delete this TODO
-   comment. *)
+    @author Yousef Abouamer (ya99) *)
 
 (************************************************************
 

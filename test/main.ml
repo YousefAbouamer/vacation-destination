@@ -71,7 +71,13 @@ let ho = Yojson.Basic.from_file (data_dir_prefix ^ "ho_plaza.json")
 (* TODO: add unit tests for modules below. You are free to reorganize the
    definitions below. Just keep it clear which tests are for which modules. *)
 
-let adventure_tests = []
+let start_room_test (name : string) (adv : Adventure.t)
+    (expected_output : string) : test =
+  name >:: fun _ -> assert_equal expected_output (start_room adv)
+
+let adventure_tests =
+  [ start_room_test "Testing Ho plaza" (from_json ho) "ho plaza" ]
+
 let command_tests = []
 let state_tests = []
 
