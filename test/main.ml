@@ -81,15 +81,18 @@ let room_ids_test (name : string) (adv : Adventure.t)
 
 let description_test (name : string) (adv : Adventure.t) (room : string)
     (expected_output : string) : test =
-  name >:: fun _ -> assert_equal expected_output (description adv room)
+  name >:: fun _ ->
+  assert_equal expected_output (description adv room) ~printer:String.escaped
 
 let adventure_tests =
   [
     start_room_test "Testing Ho plaza" (from_json ho) "ho plaza";
     room_ids_test "Testing Ho plaza room ids" (from_json ho)
       [ "ho plaza"; "health"; "tower"; "nirvana" ];
-    description_test "Testing Ho plaza description " (from_json ho)
-      "ho\n       plaza" "You are on Ho Plaza.";
+    description_test "Testing Ho plaza description " (from_json ho) "ho plaza"
+      "You are on Ho Plaza. Cornell Health is to the southwest. The chimes are \
+       playing a concert in the clock tower. Someone tries to hand you a \
+       quartercard, but you avoid them.";
   ]
 
 let command_tests = []

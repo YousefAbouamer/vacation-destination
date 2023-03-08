@@ -42,11 +42,13 @@ let from_json json =
   in
   { rms = rooms_of_json.rms; strt_room = start_room_of_json }
 
-let start_room (adv : t) = adv.strt_room
-let rec room_ids adv = List.map (fun x -> x.i) adv.rms
+let start_room adv = adv.strt_room
+let room_ids adv = List.map (fun x -> x.i) adv.rms
 
-let description adv room =
-  raise (Failure "Unimplemented: Adventure.description")
+let rec description adv room =
+  match adv.rms with
+  | [] -> raise (UnknownRoom room)
+  | h :: t -> if h.i = room then h.desc else description adv h.i
 
 let exits adv room = raise (Failure "Unimplemented: Adventure.exits")
 let next_room adv room ex = raise (Failure "Unimplemented: Adventure.next_room")
