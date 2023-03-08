@@ -75,8 +75,22 @@ let start_room_test (name : string) (adv : Adventure.t)
     (expected_output : string) : test =
   name >:: fun _ -> assert_equal expected_output (start_room adv)
 
+let room_ids_test (name : string) (adv : Adventure.t)
+    (expected_output : string list) : test =
+  name >:: fun _ -> assert_equal expected_output (room_ids adv)
+
+let description_test (name : string) (adv : Adventure.t) (room : string)
+    (expected_output : string) : test =
+  name >:: fun _ -> assert_equal expected_output (description adv room)
+
 let adventure_tests =
-  [ start_room_test "Testing Ho plaza" (from_json ho) "ho plaza" ]
+  [
+    start_room_test "Testing Ho plaza" (from_json ho) "ho plaza";
+    room_ids_test "Testing Ho plaza room ids" (from_json ho)
+      [ "ho plaza"; "health"; "tower"; "nirvana" ];
+    description_test "Testing Ho plaza description " (from_json ho)
+      "ho\n       plaza" "You are on Ho Plaza.";
+  ]
 
 let command_tests = []
 let state_tests = []

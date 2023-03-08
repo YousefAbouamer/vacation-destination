@@ -43,7 +43,7 @@ let from_json json =
   { rms = rooms_of_json.rms; strt_room = start_room_of_json }
 
 let start_room (adv : t) = adv.strt_room
-let room_ids adv = raise (Failure "Unimplemented: Adventure.room_ids")
+let rec room_ids adv = List.map (fun x -> x.i) adv.rms
 
 let description adv room =
   raise (Failure "Unimplemented: Adventure.description")
