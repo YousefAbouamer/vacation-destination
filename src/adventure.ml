@@ -43,7 +43,9 @@ let from_json json =
   { rms = rooms_of_json.rms; strt_room = start_room_of_json }
 
 let start_room adv = adv.strt_room
-let room_ids adv = List.map (fun x -> x.i) adv.rms
+
+let room_ids adv =
+  List.sort_uniq String.compare (List.map (fun x -> x.i) adv.rms)
 
 let rec description adv room =
   match adv.rms with
@@ -57,7 +59,7 @@ let rec exits_helper rms room =
       if h.i = room then List.map (fun x -> x.name) h.exitt
       else exits_helper t room
 
-let rec exits adv room = exits_helper adv.rms room
+let exits adv room = List.sort_uniq String.compare (exits_helper adv.rms room)
 
 let next_room adv room ex =
   let filter_list = List.filter (fun x -> x.i = room) adv.rms in
@@ -69,4 +71,10 @@ let next_room adv room ex =
       | [] -> raise (UnknownExit ex)
       | h :: t -> h.roomid)
 
-let next_rooms adv room = raise (Failure "Unimplemented: Adventure.next_rooms")
+let next_rooms adv room =
+  let filter_list = List.filter (fun x -> x.i = room) adv.rms in
+  match filter_list with
+  | [] -> raise (UnknownRoom room)
+  | h2 :: t2 ->
+      let final_list = List.map (fun x -> x.roomid) h2.exitt in
+      List.sort_uniq String.compare final_list

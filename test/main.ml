@@ -98,20 +98,28 @@ let next_room_test (name : string) (adv : Adventure.t) (room : string)
   name >:: fun _ ->
   assert_equal expected_output (next_room adv room ex) ~printer:String.escaped
 
+let next_rooms_test (name : string) (adv : Adventure.t) (room : string)
+    (expected_output : string list) : test =
+  name >:: fun _ ->
+  assert_equal expected_output (next_rooms adv room)
+    ~printer:(pp_list pp_string)
+
 let adventure_tests =
   [
     start_room_test "Testing Ho plaza" (from_json ho) "ho plaza";
     room_ids_test "Testing Ho plaza room ids" (from_json ho)
-      [ "ho plaza"; "health"; "tower"; "nirvana" ];
+      [ "health"; "ho plaza"; "nirvana"; "tower" ];
     description_test "Testing Ho plaza description " (from_json ho) "ho plaza"
       "You are on Ho Plaza. Cornell Health is to the southwest. The chimes are \
        playing a concert in the clock tower. Someone tries to hand you a \
        quartercard, but you avoid them.";
     exits_test "Testing Ho plaza exits" (from_json ho) "health"
-      [ "northeast"; "north east"; "Ho Plaza" ];
+      [ "Ho Plaza"; "north east"; "northeast" ];
     exits_test "testing empty exit list" (from_json ho) "nirvana" [];
     next_room_test "Testing Ho plaza " (from_json ho) "health" "northeast"
       "ho plaza";
+    next_rooms_test "Testing Ho plaza " (from_json ho) "ho plaza"
+      [ "health"; "tower" ];
   ]
 
 let command_tests = []
