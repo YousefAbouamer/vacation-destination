@@ -50,6 +50,23 @@ let rec description adv room =
   | [] -> raise (UnknownRoom room)
   | h :: t -> if h.i = room then h.desc else description adv h.i
 
-let exits adv room = raise (Failure "Unimplemented: Adventure.exits")
-let next_room adv room ex = raise (Failure "Unimplemented: Adventure.next_room")
+let rec exits_helper rms room =
+  match rms with
+  | [] -> raise (UnknownRoom room)
+  | h :: t ->
+      if h.i = room then List.map (fun x -> x.name) h.exitt
+      else exits_helper t room
+
+let rec exits adv room = exits_helper adv.rms room
+
+let next_room adv room ex =
+  let filter_list = List.filter (fun x -> x.i = room) adv.rms in
+  match filter_list with
+  | [] -> raise (UnknownRoom room)
+  | h2 :: t2 -> (
+      let filter_list2 = List.filter (fun x -> x.name = ex) h2.exitt in
+      match filter_list2 with
+      | [] -> raise (UnknownExit ex)
+      | h :: t -> h.roomid)
+
 let next_rooms adv room = raise (Failure "Unimplemented: Adventure.next_rooms")
