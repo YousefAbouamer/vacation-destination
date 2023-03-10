@@ -122,7 +122,23 @@ let adventure_tests =
       [ "health"; "tower" ];
   ]
 
-let command_tests = []
+let parse_test (name : string) (str : string) (expected_output : command) : test
+    =
+  name >:: fun _ -> assert_equal expected_output (parse str)
+
+let parse_malformed_test (name : string) (str : string) : test =
+  name >:: fun _ -> assert_raises Malformed (fun () -> parse str)
+
+let command_tests =
+  [
+    parse_test "Testing quit command" "quit" Quit;
+    parse_test "Testing the valid command" "    go   clock   tower   "
+      (Go [ "clock"; "tower" ]);
+    parse_malformed_test "Testing the case with an invalid command " " go   ";
+    parse_malformed_test "Testing the case with an invalid command with no  go"
+      "quit clock tower";
+  ]
+
 let state_tests = []
 
 let suite =
