@@ -1,0 +1,9 @@
+{
+  "rooms": [
+    {
+      "id": "King's Room",
+      "description": "This is where the King sleeps",
+      "exits": []
+    }
+  ]
+}

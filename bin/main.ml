@@ -1,5 +1,24 @@
+open Game.Adventure
 (** [play_game f] starts the adventure in file [f]. *)
-let play_game f = raise (Failure "Unimplemented: Main.play_game")
+open Game.Command
+open Game.State
+
+let rec play_helper adven state=
+  let state = init_state adven in match read_line () with
+  | exception End_of_file -> ()
+  | input_name -> match parse input_name with 
+    |exception Malformed -> print_endline("You typed in the an invalid command. Retype a valid command"); play_helper adven state
+    |exception Empty -> print_endline ("You did not type anything, go ahead and retype a valid command"); play_helper adven state
+    |x-> match x with 
+    |Quit-> print_endline ("Thanks for playing. See you next time! ") 
+    | Go t-> match go (String.concat " " t) adven state  with  
+    |Illegal-> print_endline ("Your result is illegal. Try again!"); play_helper adven state
+    |Legal t-> print_endline (description adven (current_room_id state)); play_helper adven state
+
+
+let play_game f = let json=  Yojson.Basic.from_file f in 
+  let adven =  from_json json in
+  let state = init_state adven in play_helper adven state 
 
 let data_dir_prefix = "data" ^ Filename.dir_sep
 
