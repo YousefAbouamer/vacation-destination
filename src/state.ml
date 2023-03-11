@@ -1,14 +1,18 @@
-(* Note: You may introduce new code anywhere in this file. *)
+open Adventure
 
-(* TODO: replace [unit] with a type of your own design. *)
-type t = unit
+type t = {
+  room_id : string;
+  visited_list : string list;
+}
 
-let init_state adv = raise (Failure "Unimplemented: State.init_state")
-let current_room_id st = raise (Failure "Unimplemented: State.current_room_id")
-let visited st = raise (Failure "Unimplemented: State.visited")
+let init_state adv =
+  { room_id = start_room adv; visited_list = [ start_room adv ] }
+
+let current_room_id st = st.room_id
+let visited st = List.sort_uniq String.compare st.visited_list
 
 type result =
   | Legal of t
   | Illegal
 
-let go ex adv st = raise (Failure "Unimplemented: State.go")
+let go ex adv st = raise (Failure "Not Implemented")

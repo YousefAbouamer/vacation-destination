@@ -139,7 +139,16 @@ let command_tests =
       "quit clock tower";
   ]
 
-let state_tests = []
+let current_room_id_test (name : string) (st : State.t) (room_id : string)
+    (visited : string list) (expected_output : string) : test =
+  name >:: fun _ -> assert_equal expected_output (current_room_id st)
+
+let state_tests =
+  [
+    current_room_id_test "Testing Ho plaza "
+      (init_state (from_json ho))
+      "ho plaza" [] "ho plaza";
+  ]
 
 let suite =
   "test suite for A2"
