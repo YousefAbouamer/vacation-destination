@@ -101,6 +101,11 @@ let next_rooms_test (name : string) (adv : Adventure.t) (room : string)
   assert_equal expected_output (next_rooms adv room)
     ~printer:(pp_list pp_string)
 
+let next_rooms_exc_test (name : string) (adv : Adventure.t) (room : string) :
+    test =
+  name >:: fun _ ->
+  assert_raises (UnknownRoom room) (fun () -> next_rooms adv room)
+
 let adventure_tests =
   [
     start_room_test "Testing Ho plaza start room" (from_json ho) "ho plaza";
@@ -119,6 +124,7 @@ let adventure_tests =
       "ho plaza";
     next_rooms_test "Testing Ho plaza " (from_json ho) "ho plaza"
       [ "health"; "tower" ];
+    next_rooms_exc_test "Testing exception on next_rooms" (from_json ho) "dog";
   ]
 
 let parse_test (name : string) (str : string) (expected_output : command) : test
@@ -146,12 +152,6 @@ let current_room_id_test (name : string) (st : State.t) (room_id : string)
     (visited : string list) (expected_output : string) : test =
   name >:: fun _ -> assert_equal expected_output (current_room_id st)
 
-(* let go_test (name : string) (ex : string) (adv : Adventure.t) (st : State.t)
-   (expected_output : result) : test = name >:: fun _ -> assert_equal
-   expected_output (go ex adv st) *)
-
-(* let state_t= match go "southwest" (from_json ho ) (init_state (from_json ho
-   )) with |Legal t->t |Illegal -> failwith "" *)
 let illegal_go_test (name : string) (ex : string) (adv : Adventure.t)
     (st : State.t) (expected_output : result) : test =
   name >:: fun _ -> assert_equal expected_output (go ex adv st)
