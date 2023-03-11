@@ -90,6 +90,11 @@ let exits_test_empty_list (name : string) (adv : Adventure.t) (room : string) :
     test =
   name >:: fun _ -> assert_raises (UnknownRoom room) (fun () -> exits adv room)
 
+let next_room_test_Unkn_exp (name : string) (adv : Adventure.t) (room : string)
+    (ex : string) : test =
+  name >:: fun _ ->
+  assert_raises (UnknownExit ex) (fun () -> next_room adv room ex)
+
 let next_room_test (name : string) (adv : Adventure.t) (room : string)
     (ex : string) (expected_output : string) : test =
   name >:: fun _ ->
@@ -123,6 +128,8 @@ let adventure_tests =
       "cat";
     next_room_test "Testing Ho plaza with health and northeast" (from_json ho)
       "health" "northeast" "ho plaza";
+    next_room_test_Unkn_exp "Testing the throwing of Unknown Exit"
+      (from_json ho) "health" "Dog";
     next_rooms_test "Testing Ho plaza with health and tower as my list"
       (from_json ho) "ho plaza" [ "health"; "tower" ];
     next_rooms_exc_test "Testing Unknown exception on next_rooms" (from_json ho)

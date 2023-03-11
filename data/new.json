@@ -1,9 +1,118 @@
 {
   "rooms": [
     {
-      "id": "King's Room",
-      "description": "This is where the King sleeps",
-      "exits": []
+      "id": "King's Chamber",
+      "description": "This is where the King sleeps and resides",
+      "exits": [
+        {
+          "name": "Queen's bedroom",
+          "room id": "Queen's Chamber"
+        },
+        {
+          "name": "Princess's room",
+          "room id": "Princess's Chamber"
+        },
+        {
+          "name": "Prince's room",
+          "room id": "Prince's Chamber"
+        },
+        {
+          "name": "Common meeting room",
+          "room id": "The Palace's Commons"
+        },
+        {
+          "name": "Dining Hall",
+          "room id": "The Palace's Commons"
+        }
+      ]
+    },
+    {
+      "id": "Queen's Chamber",
+      "description": "This is where the Queen resides and sleeps",
+      "exits": [
+        {
+          "name": "King's bedroom",
+          "room id": "King's Chamber"
+        },
+        {
+          "name": "Princess's room",
+          "room id": "Princess's Chamber"
+        },
+        {
+          "name": "Prince's room",
+          "room id": "Prince's Chamber"
+        },
+        {
+          "name": "Common meeting room",
+          "room id": "The Palace's Commons"
+        },
+        {
+          "name": "Dining Hall",
+          "room id": "The Palace's Commons"
+        }
+      ]
+    },
+    {
+      "id": "Princess's Chamber",
+      "description": "This is where the Princess resides and sleeps",
+      "exits": [
+        {
+          "name": "King's bedroom",
+          "room id": "King's Chamber"
+        },
+        {
+          "name": "Queen's bedroom",
+          "room id": "Queen's Chamber"
+        },
+        {
+          "name": "Prince's room",
+          "room id": "Prince's Chamber"
+        },
+        {
+          "name": "Dining Hall",
+          "room id": "The Palace's Commons"
+        }
+      ]
+    },
+    {
+      "id": "Prince's Chamber",
+      "description": "This is where the Prince resides and sleeps",
+      "exits": [
+        {
+          "name": "King's bedroom",
+          "room id": "King's Chamber"
+        },
+        {
+          "name": "Queen's bedroom",
+          "room id": "Queen's Chamber"
+        },
+        {
+          "name": "Princess's room",
+          "room id": "Princess's Chamber"
+        },
+        {
+          "name": "Dining Hall",
+          "room id": "The Palace's Commons"
+        }
+      ]
+    },
+    {
+      "id": "The Palace's Commons",
+      "description": "This is where the people of the palace meet to eat, work, etc. Only the King and Queen are allowed to attend meetings from the royal family",
+      "exits": [
+        {
+          "name": "King's bedroom",
+          "room id": "King's Chamber"
+        },
+        {
+          "name": "Queen's bedroom",
+          "room id": "Queen's Chamber"
+        },
+        {
+          "name": "Princess's room",
+          "room id": "Princess's Chamber"
+        }
+      ]
     }
   ]
 }
