@@ -108,7 +108,8 @@ let next_rooms_exc_test (name : string) (adv : Adventure.t) (room : string) :
 
 let adventure_tests =
   [
-    start_room_test "Testing Ho plaza start room" (from_json ho) "ho plaza";
+    start_room_test "Testing Ho plaza start room with ho plaza" (from_json ho)
+      "ho plaza";
     room_ids_test "Testing Ho plaza room ids" (from_json ho)
       [ "health"; "ho plaza"; "nirvana"; "tower" ];
     description_test "Testing Ho plaza description " (from_json ho) "ho plaza"
@@ -120,11 +121,12 @@ let adventure_tests =
     exits_test "testing empty exit list" (from_json ho) "nirvana" [];
     exits_test_empty_list "testing the Unknown room exception" (from_json ho)
       "cat";
-    next_room_test "Testing Ho plaza " (from_json ho) "health" "northeast"
-      "ho plaza";
-    next_rooms_test "Testing Ho plaza " (from_json ho) "ho plaza"
-      [ "health"; "tower" ];
-    next_rooms_exc_test "Testing exception on next_rooms" (from_json ho) "dog";
+    next_room_test "Testing Ho plaza with health and northeast" (from_json ho)
+      "health" "northeast" "ho plaza";
+    next_rooms_test "Testing Ho plaza with health and tower as my list"
+      (from_json ho) "ho plaza" [ "health"; "tower" ];
+    next_rooms_exc_test "Testing Unknown exception on next_rooms" (from_json ho)
+      "dog";
   ]
 
 let parse_test (name : string) (str : string) (expected_output : command) : test
