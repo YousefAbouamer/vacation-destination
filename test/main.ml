@@ -68,9 +68,6 @@ let ho = Yojson.Basic.from_file (data_dir_prefix ^ "ho_plaza.json")
    exposed in the [.mli] files. Do not expose your helper functions. See the
    handout for an explanation. *)
 
-(* TODO: add unit tests for modules below. You are free to reorganize the
-   definitions below. Just keep it clear which tests are for which modules. *)
-
 let start_room_test (name : string) (adv : Adventure.t)
     (expected_output : string) : test =
   name >:: fun _ -> assert_equal expected_output (start_room adv)
@@ -89,8 +86,8 @@ let exits_test (name : string) (adv : Adventure.t) (room : string)
   name >:: fun _ ->
   assert_equal expected_output (exits adv room) ~printer:(pp_list pp_string)
 
-let exits_test_empty_list (name : string) (adv : Adventure.t) (room : string)
-    (expected_output : string list) : test =
+let exits_test_empty_list (name : string) (adv : Adventure.t) (room : string) :
+    test =
   name >:: fun _ -> assert_raises (UnknownRoom room) (fun () -> exits adv room)
 
 let next_room_test (name : string) (adv : Adventure.t) (room : string)
@@ -106,7 +103,7 @@ let next_rooms_test (name : string) (adv : Adventure.t) (room : string)
 
 let adventure_tests =
   [
-    start_room_test "Testing Ho plaza" (from_json ho) "ho plaza";
+    start_room_test "Testing Ho plaza start room" (from_json ho) "ho plaza";
     room_ids_test "Testing Ho plaza room ids" (from_json ho)
       [ "health"; "ho plaza"; "nirvana"; "tower" ];
     description_test "Testing Ho plaza description " (from_json ho) "ho plaza"
@@ -116,6 +113,8 @@ let adventure_tests =
     exits_test "Testing Ho plaza exits" (from_json ho) "health"
       [ "Ho Plaza"; "north east"; "northeast" ];
     exits_test "testing empty exit list" (from_json ho) "nirvana" [];
+    exits_test_empty_list "testing the Unknown room exception" (from_json ho)
+      "cat";
     next_room_test "Testing Ho plaza " (from_json ho) "health" "northeast"
       "ho plaza";
     next_rooms_test "Testing Ho plaza " (from_json ho) "ho plaza"
@@ -129,6 +128,9 @@ let parse_test (name : string) (str : string) (expected_output : command) : test
 let parse_malformed_test (name : string) (str : string) : test =
   name >:: fun _ -> assert_raises Malformed (fun () -> parse str)
 
+let parse_empty_test (name : string) (str : string) : test =
+  name >:: fun _ -> assert_raises Empty (fun () -> parse str)
+
 let command_tests =
   [
     parse_test "Testing quit command" "quit" Quit;
@@ -137,17 +139,35 @@ let command_tests =
     parse_malformed_test "Testing the case with an invalid command " " go   ";
     parse_malformed_test "Testing the case with an invalid command with no  go"
       "quit clock tower";
+    parse_empty_test "testing empty command" "";
   ]
 
 let current_room_id_test (name : string) (st : State.t) (room_id : string)
     (visited : string list) (expected_output : string) : test =
   name >:: fun _ -> assert_equal expected_output (current_room_id st)
 
+(* let go_test (name : string) (ex : string) (adv : Adventure.t) (st : State.t)
+   (expected_output : result) : test = name >:: fun _ -> assert_equal
+   expected_output (go ex adv st) *)
+
+(* let state_t= match go "southwest" (from_json ho ) (init_state (from_json ho
+   )) with |Legal t->t |Illegal -> failwith "" *)
+let illegal_go_test (name : string) (ex : string) (adv : Adventure.t)
+    (st : State.t) (expected_output : result) : test =
+  name >:: fun _ -> assert_equal expected_output (go ex adv st)
+
 let state_tests =
   [
-    current_room_id_test "Testing Ho plaza "
+    illegal_go_test "testing illegal" "cats" (from_json ho)
       (init_state (from_json ho))
-      "ho plaza" [] "ho plaza";
+      Illegal;
+    ( "test for legal result" >:: fun _ ->
+      let legal =
+        match go "Gannett" (from_json ho) (init_state (from_json ho)) with
+        | Legal t -> t
+        | Illegal -> failwith ""
+      in
+      assert_equal [ "health"; "ho plaza" ] (visited legal) );
   ]
 
 let suite =

@@ -15,4 +15,12 @@ type result =
   | Legal of t
   | Illegal
 
-let go ex adv st = raise (Failure "Not Implemented")
+let go ex adv st =
+  try
+    let go = next_room adv st.room_id ex in
+    Legal
+      {
+        room_id = go;
+        visited_list = List.sort_uniq String.compare (go :: st.visited_list);
+      }
+  with UnknownExit _ -> Illegal
