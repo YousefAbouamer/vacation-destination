@@ -162,12 +162,12 @@ let state_tests =
       (init_state (from_json ho))
       Illegal;
     ( "test for legal result" >:: fun _ ->
-      let legal =
+      let legal_go_test =
         match go "Gannett" (from_json ho) (init_state (from_json ho)) with
         | Legal t -> t
         | Illegal -> failwith ""
       in
-      assert_equal [ "health"; "ho plaza" ] (visited legal) );
+      assert_equal [ "health"; "ho plaza" ] (visited legal_go_test) );
   ]
 
 let suite =
