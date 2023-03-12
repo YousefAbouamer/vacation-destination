@@ -50,7 +50,8 @@ let room_ids adv =
 let rec description adv room =
   match adv.rms with
   | [] -> raise (UnknownRoom room)
-  | h :: t -> if h.i = room then h.desc else description adv h.i
+  | { i = id; desc = d; _ } :: t ->
+      if id = room then d else description { adv with rms = t } room
 
 let rec exits_helper rms room =
   match rms with

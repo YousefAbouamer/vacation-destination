@@ -111,6 +111,10 @@ let next_rooms_exc_test (name : string) (adv : Adventure.t) (room : string) :
   name >:: fun _ ->
   assert_raises (UnknownRoom room) (fun () -> next_rooms adv room)
 
+let desc_exp (name : string) (adv : Adventure.t) (room : string) : test =
+  name >:: fun _ ->
+  assert_raises (UnknownRoom room) (fun () -> description adv room)
+
 let adventure_tests =
   [
     start_room_test "Testing Ho plaza start room with ho plaza" (from_json ho)
@@ -121,6 +125,7 @@ let adventure_tests =
       "You are on Ho Plaza. Cornell Health is to the southwest. The chimes are \
        playing a concert in the clock tower. Someone tries to hand you a \
        quartercard, but you avoid them.";
+    desc_exp "Testing Unknown Exception" (from_json ho) "dog";
     exits_test "Testing Ho plaza exits" (from_json ho) "health"
       [ "Ho Plaza"; "north east"; "northeast" ];
     exits_test "testing empty exit list" (from_json ho) "nirvana" [];
